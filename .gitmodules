@@ -1,0 +1,3 @@
+[submodule "libela"]
+	path = libela
+	url = https://github.com/fbx/libela.git
