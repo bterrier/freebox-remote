@@ -1,3 +1,9 @@
 [submodule "libela"]
 	path = libela
 	url = https://github.com/fbx/libela.git
+[submodule "librudp"]
+	path = librudp
+	url = ../librudp
+[submodule "foils_hid"]
+	path = foils_hid
+	url = ../foils_hid
