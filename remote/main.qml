@@ -82,6 +82,7 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/menu_open-24px.svg"
+                onClicked: fh.send(FoilHid.DC_SYSTEM_CONTEXT_MENU);
             }
 
             Button {
@@ -102,6 +103,7 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/volume_up-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_VOLUME_INCREMENT);
             }
 
             Button {
@@ -111,10 +113,12 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/add-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_CHANNEL_INCREMENT);
             }
 
             Button {
                 icon.source: "qrc:/icons/volume_down-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_VOLUME_DECREMENT);
             }
 
             Button {
@@ -124,6 +128,7 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/remove-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_CHANNEL_DECREMENT);
             }
             Button {
                 icon.source: "qrc:/icons/fast_rewind-24px.svg"
@@ -132,6 +137,7 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/play_arrow-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_PLAY);
             }
 
             Button {

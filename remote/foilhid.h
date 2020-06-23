@@ -12,8 +12,7 @@ extern "C" {
 Q_DECLARE_METATYPE(foils_hid_state)
 class FoilHid : public QObject
 {
-    Q_OBJECT
-    Q_PROPERTY(foils_hid_state state READ state NOTIFY stateChanged)
+    Q_OBJECT Q_PROPERTY(foils_hid_state state READ state NOTIFY stateChanged)
 public:
     enum ConsumerCode : quint32 {
         HID_CONSUMER_SUB_CHANNEL_INCREMENT = 0x171,
@@ -63,6 +62,14 @@ public:
     };
     Q_ENUM(KeyboardCode)
 
+    enum SystemCode {
+        DC_SYSTEM_POWER_DOWN = 0x01,
+        DC_SYSTEM_POWER_SLEEP = 0x02,
+        DC_SYSTEM_POWER_WAKEUP = 0x04,
+        DC_SYSTEM_CONTEXT_MENU = 0x08
+    };
+    Q_ENUM(SystemCode)
+
     explicit FoilHid(ela_el *el, QObject *parent = nullptr);
     ~FoilHid() override;
     bool connectToHost(const QLatin1String &hostname, quint16 port);
@@ -74,23 +81,25 @@ public:
 
     Q_INVOKABLE static QString stateString(foils_hid_state state);
 
-    void send_unicode(uint32_t code);
-    void send_kbd(uint32_t _code);
-    void send_cons(uint32_t _code);
-    void send_sysctl(uint32_t _code);
-public slots:
 
+public slots:
     void sendKeyboard(KeyboardCode code);
     void sendConsumer(ConsumerCode code);
+    void send(SystemCode code);
 
 signals:
-
     void stateChanged(foils_hid_state state);
 
 private:
     static QHash<foils_hid *, FoilHid *> s_instances;
 
     static void onStatusChanged(foils_hid *client, foils_hid_state state);
+
+    void send_unicode(uint32_t code);
+    void send_kbd(uint32_t _code);
+    void send_cons(uint32_t _code);
+    void send_sysctl(uint32_t _code);
+
 
     void setState(foils_hid_state state)
     {

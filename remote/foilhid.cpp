@@ -125,11 +125,11 @@ static const uint8_t unicode_report_descriptor[] = {
 };
 
 static const
-struct foils_hid_device_descriptor descriptors[] =
-{
-    { "Unicode", 0x0100,
-      (void*)unicode_report_descriptor, sizeof(unicode_report_descriptor),
-      NULL, 0, NULL, 0
+struct foils_hid_device_descriptor descriptors[] = {
+    {
+        "Unicode", 0x0100,
+        (void *)unicode_report_descriptor, sizeof(unicode_report_descriptor),
+        NULL, 0, NULL, 0
     },
 };
 
@@ -193,6 +193,7 @@ void FoilHid::send()
 QString FoilHid::stateString(foils_hid_state state)
 {
     QString st;
+
     switch (state) {
     case FOILS_HID_IDLE:
         st = "idle";
@@ -222,6 +223,7 @@ void FoilHid::onStatusChanged(foils_hid *client, foils_hid_state state)
 {
 
     auto ptr = s_instances.value(client, nullptr);
+
     if (ptr) {
         ptr->setState(state);
     }
@@ -263,5 +265,13 @@ void FoilHid::sendConsumer(ConsumerCode code)
     send_cons(code);
     QTimer::singleShot(1, this, [this]() {
         send_cons(0);
+    });
+}
+
+void FoilHid::send(FoilHid::SystemCode code)
+{
+    send_sysctl(code);
+    QTimer::singleShot(1, this, [this]() {
+        send_sysctl(0);
     });
 }
