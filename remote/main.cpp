@@ -63,6 +63,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    qmlRegisterUncreatableType<FoilHid>("dev.bterrier.remote", 1 , 0, "FoilHid", "");
+
     QObject::connect(&app, &QCoreApplication::aboutToQuit, &app, []() {
         qDebug() << "aboutToQuit()";
     });

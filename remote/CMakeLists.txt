@@ -33,6 +33,8 @@ else()
 	foilhid.h
       main.cpp
       qml.qrc
+      icons.qrc
+
     )
 endif()
 

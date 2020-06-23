@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/fast_forward-24px.svg</file>
+        <file>icons/fast_rewind-24px.svg</file>
+        <file>icons/pause-24px.svg</file>
+        <file>icons/play_arrow-24px.svg</file>
+        <file>icons/power_settings_new-24px.svg</file>
+        <file>icons/volume_off-24px.svg</file>
+        <file>icons/add-24px.svg</file>
+        <file>icons/arrow_drop_down-24px.svg</file>
+        <file>icons/arrow_drop_up-24px.svg</file>
+        <file>icons/arrow_left-24px.svg</file>
+        <file>icons/arrow_right-24px.svg</file>
+        <file>icons/fiber_manual_record-24px.svg</file>
+        <file>icons/info-24px.svg</file>
+        <file>icons/menu_open-24px.svg</file>
+        <file>icons/remove-24px.svg</file>
+        <file>icons/search-24px.svg</file>
+        <file>icons/undo-24px.svg</file>
+        <file>icons/volume_down-24px.svg</file>
+        <file>icons/volume_up-24px.svg</file>
+    </qresource>
+</RCC>

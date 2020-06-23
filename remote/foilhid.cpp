@@ -103,9 +103,9 @@ static const uint8_t unicode_report_descriptor[] = {
     0x95, 0x01,         /*  Report Count (1),                   */
     0x75, 0x10,         /*  Report Size (16),                   */
     0x19, 0x00,         /*  Usage Minimum (Consumer Control),   */
-    0x2A, 0xB0, 0x0F,   /*  Usage Maximum (AC Debug Overlay),   */
+    0x2A, 0x8C, 0x02,   /*  Usage Maximum (AC Send),            */
     0x15, 0x00,         /*  Logical Minimum (0),                */
-    0x26, 0xB0, 0x0F,   /*  Logical Maximum (4016),             */
+    0x26, 0x8C, 0x02,   /*  Logical Maximum (652),              */
     0x80,               /*  Input,                              */
     0xC0,               /* End Collection,                      */
 
@@ -125,17 +125,12 @@ static const uint8_t unicode_report_descriptor[] = {
 };
 
 static const
-foils_hid_device_descriptor descriptors[] = {
-//    {
-//        "Remote", 0x0100,
-//        (void *)remote_descriptor, sizeof(remote_descriptor),
-//        NULL, 0, NULL, 0
-//    },
-    {
-        "Unicode", 0x0100,
-        (void *)unicode_report_descriptor, sizeof(unicode_report_descriptor),
-        NULL, 0, NULL, 0
-    }
+struct foils_hid_device_descriptor descriptors[] =
+{
+    { "Unicode", 0x0100,
+      (void*)unicode_report_descriptor, sizeof(unicode_report_descriptor),
+      NULL, 0, NULL, 0
+    },
 };
 
 
@@ -230,4 +225,43 @@ void FoilHid::onStatusChanged(foils_hid *client, foils_hid_state state)
     if (ptr) {
         ptr->setState(state);
     }
+}
+
+void FoilHid::send_unicode(uint32_t code)
+{
+    foils_hid_input_report_send(&m_client, 0, 1, 1, &code, sizeof(code));
+}
+
+void FoilHid::send_kbd(uint32_t _code)
+{
+    uint8_t code = _code;
+    foils_hid_input_report_send(&m_client, 0, 2, 1, &code, sizeof(code));
+}
+
+void FoilHid::send_cons(uint32_t _code)
+{
+    uint16_t code = _code;
+    foils_hid_input_report_send(&m_client, 0, 3, 1, &code, sizeof(code));
+}
+
+void FoilHid::send_sysctl(uint32_t _code)
+{
+    uint8_t code = _code;
+    foils_hid_input_report_send(&m_client, 0, 4, 1, &code, sizeof(code));
+}
+
+void FoilHid::sendKeyboard(KeyboardCode code)
+{
+    send_kbd(code);
+    QTimer::singleShot(1, this, [this]() {
+        send_kbd(0);
+    });
+}
+
+void FoilHid::sendConsumer(ConsumerCode code)
+{
+    send_cons(code);
+    QTimer::singleShot(1, this, [this]() {
+        send_cons(0);
+    });
 }
