@@ -27,11 +27,12 @@ ApplicationWindow {
 
             Button {
                 text: 'AV'
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_VCR_TV);
             }
             Button {
                 Layout.column: 2
                 icon.source: "qrc:/icons/power_settings_new-24px.svg"
-                onClicked: fh.sendKeyboard(FoilHid.HID_KEYBOARD_POWER);
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_POWER);
             }
             Repeater {
                 model: 9
@@ -39,6 +40,7 @@ ApplicationWindow {
 
                 Button {
                     text: index + 1
+                    onClicked: fh.sendKeyboard(FoilHid.HID_KEYBOARD_1 + index);
                 }
             }
 
@@ -46,10 +48,12 @@ ApplicationWindow {
                 Layout.row: 4
                 Layout.column: 1
                 text: '0'
+                onClicked: fh.sendKeyboard(FoilHid.HID_KEYBOARD_0);
             }
             Button {
                 Layout.row: 5
                 icon.source: "qrc:/icons/undo-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_AC_EXIT);
             }
 
             Button {
@@ -60,6 +64,7 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/search-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_AC_SEARCH);
             }
 
 
@@ -92,13 +97,14 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/info-24px.svg"
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_AC_PROPERTIES);
             }
 
             Button {
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 text: 'free'
-                onClicked: fh.sendKeyboard(FoilHid.HID_KEYBOARD_HOME);
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_AL_TASK_MANAGER);
             }
 
             Button {
@@ -137,7 +143,7 @@ ApplicationWindow {
 
             Button {
                 icon.source: "qrc:/icons/play_arrow-24px.svg"
-                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_PLAY);
+                onClicked: fh.sendConsumer(FoilHid.HID_CONSUMER_PLAY_PAUSE);
             }
 
             Button {

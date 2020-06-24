@@ -15,6 +15,8 @@ class FoilHid : public QObject
     Q_OBJECT Q_PROPERTY(foils_hid_state state READ state NOTIFY stateChanged)
 public:
     enum ConsumerCode : quint32 {
+        HID_CONSUMER_POWER = 0x30,
+        HID_CONSUMER_VCR_TV =  0x63, // AV Button
         HID_CONSUMER_SUB_CHANNEL_INCREMENT = 0x171,
         HID_CONSUMER_ALTERNATE_AUDIO_INCREMENT = 0x173,
         HID_CONSUMER_ALTERNATE_SUBTITLE_INCREMENT = 0x175,
@@ -29,6 +31,7 @@ public:
         HID_CONSUMER_SCAN_PREVIOUS_TRACK = 0xb6,
         HID_CONSUMER_STOP = 0xb7,
         HID_CONSUMER_EJECT = 0xb8,
+        HID_CONSUMER_PLAY_PAUSE = 0xcd,
         HID_CONSUMER_MUTE = 0xe2,
         HID_CONSUMER_VOLUME_INCREMENT = 0xe9,
         HID_CONSUMER_VOLUME_DECREMENT = 0xea,
@@ -59,6 +62,16 @@ public:
         HID_KEYBOARD_HOME = 0x4A,
         HID_KEYBOARD_POWER = 0x66,
         HID_KEYBOARD_F1 = 0x3A,
+        HID_KEYBOARD_1 = 0x59,
+        HID_KEYBOARD_2,
+        HID_KEYBOARD_3,
+        HID_KEYBOARD_4,
+        HID_KEYBOARD_5,
+        HID_KEYBOARD_6,
+        HID_KEYBOARD_7,
+        HID_KEYBOARD_8,
+        HID_KEYBOARD_9,
+        HID_KEYBOARD_0
     };
     Q_ENUM(KeyboardCode)
 
