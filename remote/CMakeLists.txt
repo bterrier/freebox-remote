@@ -20,7 +20,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_package(Qt5 COMPONENTS Core Quick REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick QuickControls2 REQUIRED)
 
 if(ANDROID)
     add_library(remote SHARED
@@ -41,7 +41,7 @@ endif()
 target_compile_definitions(remote
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(remote
-  PRIVATE Qt5::Core Qt5::Quick ela foils_hid rudp elaqt)
+  PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 ela foils_hid rudp elaqt)
 
 target_link_directories(remote PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../build/lib)
 

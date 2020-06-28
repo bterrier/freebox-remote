@@ -5,6 +5,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <QSocketNotifier>
 #include <QAbstractEventDispatcher>
 #include <QHostAddress>
@@ -47,10 +48,10 @@ QString type2string(QtMsgType type)
 static void messagehandler(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
     QString output = QStringLiteral("%1 [%2] %3 (%4:%5)").arg(QTime::currentTime().toString(Qt::ISODateWithMs))
-            .arg(type2string(type))
-            .arg(message)
-            .arg(QFileInfo(context.file).fileName())
-            .arg(context.line);
+                     .arg(type2string(type))
+                     .arg(message)
+                     .arg(QFileInfo(context.file).fileName())
+                     .arg(context.line);
     std::cerr << output.toUtf8().constData() << std::endl;
 }
 
@@ -61,9 +62,10 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
+    QQuickStyle::setStyle("Material");
     QGuiApplication app(argc, argv);
 
-    qmlRegisterUncreatableType<FoilHid>("dev.bterrier.remote", 1 , 0, "FoilHid", "");
+    qmlRegisterUncreatableType<FoilHid>("dev.bterrier.remote", 1, 0, "FoilHid", "");
 
     QObject::connect(&app, &QCoreApplication::aboutToQuit, &app, []() {
         qDebug() << "aboutToQuit()";
@@ -97,7 +99,7 @@ int main(int argc, char *argv[])
         const QUrl url(QStringLiteral("qrc:/main.qml"));
 
         QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                         &app, [url](QObject * obj, const QUrl & objUrl) {
+        &app, [url](QObject * obj, const QUrl & objUrl) {
             if (!obj && url == objUrl)
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
