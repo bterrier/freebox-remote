@@ -11,6 +11,16 @@
 Q_DECLARE_LOGGING_CATEGORY(elaQt)
 Q_LOGGING_CATEGORY(elaQt, "ela.qt", QtDebugMsg)
 
+
+static void helper_delete(QObject *object)
+{
+    if (!object)
+        return;
+
+    object->disconnect();
+    object->deleteLater();
+}
+
 struct ela_event_source {
     ela_handler_func *func;
     void *priv = nullptr;
@@ -26,9 +36,9 @@ struct ela_event_source {
 
     ~ela_event_source()
     {
-        delete timer;
-        delete writeNotifier;
-        delete readNotifier;
+        helper_delete(timer);
+        helper_delete(readNotifier);
+        helper_delete(writeNotifier);
     }
 
     void onEvent(int flag)
@@ -62,7 +72,12 @@ struct ela_event_source {
         qCDebug(elaQt) << __func__ << ElaQt::Obj::Flags(flags) << fd;
 
         if (flags & ELA_EVENT_READABLE) {
-            delete readNotifier;
+            if (readNotifier) {
+                readNotifier->disconnect();
+                readNotifier->setEnabled(false);
+                readNotifier->deleteLater();
+            }
+
             readNotifier = new QSocketNotifier(fd, QSocketNotifier::Read);
             qApp->eventDispatcher()->registerSocketNotifier(readNotifier);
             readNotifier->setEnabled(true);
@@ -75,7 +90,13 @@ struct ela_event_source {
 
 
         if (flags & ELA_EVENT_WRITABLE) {
-            delete writeNotifier;
+
+            if (writeNotifier) {
+                writeNotifier->disconnect();
+                writeNotifier->setEnabled(false);
+                writeNotifier->deleteLater();
+            }
+
             writeNotifier = new QSocketNotifier(fd, QSocketNotifier::Write);
             writeNotifier->setEnabled(true);
             qApp->eventDispatcher()->registerSocketNotifier(writeNotifier);
@@ -94,22 +115,36 @@ struct ela_event_source {
                 });
             }
 
-            timer->setInterval(tv.tv_sec * 1000 + tv.tv_usec / 1000);
-            timer->start();
+            timer->start(tv.tv_sec * 1000 + tv.tv_usec / 1000);
         }
     }
 
     void disable()
     {
-        if (timer)
+        if (timer) {
+            timer->disconnect();
             timer->stop();
+            timer->deleteLater();
+            timer = nullptr;
+        }
 
-        if (readNotifier)
+        if (readNotifier) {
+
+            qApp->eventDispatcher()->unregisterSocketNotifier(readNotifier);
+            readNotifier->disconnect();
             readNotifier->setEnabled(false);
+            readNotifier->deleteLater();
+            readNotifier = nullptr;
+        }
 
-        if (writeNotifier)
+        if (writeNotifier) {
+
+            qApp->eventDispatcher()->unregisterSocketNotifier(writeNotifier);
+            writeNotifier->disconnect();
             writeNotifier->setEnabled(false);
-
+            writeNotifier->deleteLater();
+            writeNotifier = nullptr;
+        }
     }
 };
 
@@ -207,7 +242,9 @@ void source_free(
 
     qDebug() << Q_FUNC_INFO << src;
 
-    delete src;
+    QMetaObject::invokeMethod(qApp, [src]() {
+        delete src;
+    }, Qt::QueuedConnection);
 }
 
 
@@ -284,7 +321,8 @@ ela_el_backend *backend()
 }
 }
 
-extern "C" ela_el *elaqt_create(int argc, char *argv[]) {
+extern "C" ela_el *elaqt_create(int argc, char *argv[])
+{
 
     ela_register(ElaQt::backend());
     QCoreApplication *app = new QCoreApplication(argc, argv);
