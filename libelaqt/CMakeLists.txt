@@ -5,13 +5,10 @@ add_library(elaqt
     src/elaqt.cpp)
 
 target_include_directories(elaqt PUBLIC
-    include
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libela/include)
+    include)
 
 
 target_link_libraries(elaqt PUBLIC Qt5::Core ela)
-
-target_link_directories(elaqt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../build/lib)
 
 
 

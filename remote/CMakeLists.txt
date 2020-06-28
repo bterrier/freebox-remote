@@ -41,11 +41,6 @@ endif()
 target_compile_definitions(remote
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(remote
-  PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 ela foils_hid rudp elaqt)
+  PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 ela foils_hid rudp elaqt foils_hid)
 
-target_link_directories(remote PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../build/lib)
 
-target_include_directories(remote PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libela/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/../librudp/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/../foils_hid/include)

@@ -22,11 +22,6 @@ This projects uses the Qt framework published under the GNU GPLv3.
     git submodule update -i
     ```
 
-1. Build 3rd party libraries (libela, librudp and foild_hid). This only need to be done once, or when on the the submodule has been updated. This will create a folder `build` where the artifacts of the 3rd party libraries will be installed.
-    ```bash
-    ./build.sh
-    ```
-
 1. Build using cmake
     ```bash
     mkdir mybuild

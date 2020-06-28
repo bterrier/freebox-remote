@@ -11,6 +11,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON) 
 
+
+add_subdirectory(libela)
+add_subdirectory(librudp)
+add_subdirectory(foils_hid)
 add_subdirectory(libelaqt)
 add_subdirectory(remote)
 add_subdirectory(remote-cli)
